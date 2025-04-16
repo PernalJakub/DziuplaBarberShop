@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Carousel – Swiper.js</title>
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Swiper -->
+  <div class="carousel-wrapper">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div class="swiper-slide" style="background-image: url('slide1.jpg')">
+          <div class="overlay"></div>
+          <div class="slide-content">
+            <h1>więcej niż <strong>barber.</strong><br />miejsce pełne możliwości</h1>
+            <button>✂️ twój styl</button>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="swiper-slide" style="background-image: url('slide2.jpg')">
+          <div class="overlay"></div>
+          <div class="slide-content">
+            <h1>pełen <strong>profesjonalizm</strong><br />w każdej usłudze</h1>
+            <button>✂️ wybierz barbera</button>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="swiper-slide" style="background-image: url('slide3.jpg')">
+          <div class="overlay"></div>
+          <div class="slide-content">
+            <h1><strong>szkolenia</strong> online<br />porady i więcej</h1>
+            <button>✂️ sprawdź ofertę</button>
+          </div>
+        </div>
+      </div>
+      <!-- Navigation buttons -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <!-- Pagination dots -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

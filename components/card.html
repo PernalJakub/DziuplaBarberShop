@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karta Barber</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #f0f0f0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      width: 360px;
+      height: 472px;
+      background: #000;
+      color: white;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: opacity 0.4s ease;
+    }
+    .card-content {
+      padding: 16px;
+    }
+    .card-content .name {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .actions button {
+      padding: 8px 16px;
+      background: white;
+      border: none;
+      border-radius: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .social {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .social img {
+      width: 24px;
+      height: 24px;
+    }
+    .umow {
+      margin-top: 12px;
+      background: white;
+      color: black;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <img src="cat1.jpg" alt="Renata Pyzocha" id="image1" />
+    <img src="cat2.jpg" alt="Renata Pyzocha" id="image2" class="hidden" />
+    <img src="cat3.jpg" alt="Renata Pyzocha" id="image3" class="hidden" />
+    <div class="card-content">
+      <div class="name">Renata Pyzocha</div>
+      <div class="actions" id="toggle-buttons">
+        <button id="toggleInfo">więcej</button>
+      </div>
+      <div class="hidden" id="social-section">
+        <div class="social">
+          <img src="tiktok.svg" alt="TikTok" />
+          <img src="instagram.svg" alt="Instagram" />
+          <img src="facebook.svg" alt="Facebook" />
+        </div>
+        <button class="umow">umów się</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const card = document.getElementById("card");
+    const image1 = document.getElementById("image1");
+    const image2 = document.getElementById("image2");
+    const image3 = document.getElementById("image3");
+    const toggleInfo = document.getElementById("toggleInfo");
+    const socialSection = document.getElementById("social-section");
+
+    let isExpanded = false;
+
+    card.addEventListener("mouseenter", () => {
+      image1.classList.add("hidden");
+      image2.classList.remove("hidden");
+    });
+
+    card.addEventListener("mouseleave", () => {
+      if (!isExpanded) {
+        image2.classList.add("hidden");
+        image1.classList.remove("hidden");
+      }
+    });
+
+    toggleInfo.addEventListener("click", () => {
+      isExpanded = !isExpanded;
+      if (isExpanded) {
+        image2.classList.add("hidden");
+        image3.classList.remove("hidden");
+        toggleInfo.textContent = "mniej";
+        socialSection.classList.remove("hidden");
+      } else {
+        image3.classList.add("hidden");
+        image2.classList.remove("hidden");
+        toggleInfo.textContent = "więcej";
+        socialSection.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+</html>

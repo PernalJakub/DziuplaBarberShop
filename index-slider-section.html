@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<!--
+  🌿 Custom Responsive Slider – Technical Overview
+  
+  🧱 Technologies Used:
+  - HTML: Semantic structure with responsive container layout.
+  - CSS: Custom properties for a full design system (typography, spacing, colors).
+    - Typography system adjusts across desktop, tablet, and mobile using :root and media queries.
+    - Animations: Intro typing effect, fade-ins, slide transitions.
+  - JavaScript:
+    - Full slider logic: navigation, autoplay, fade-in sequencing.
+    - Autoplay runs only on wider screens (>991px), and pauses on hover.
+    - Arrows show/hide on hover below 991px to simulate better UX on desktop with smaller screens.
+    - Touch swipe support for tablet/mobile.
+    - Resize observer keeps the slider centered on layout changes.
+  
+  📱 UX Highlights:
+  - Fully responsive and mobile-friendly.
+  - Touch gestures enabled for small devices.
+  - Visual polish: smooth animations, layered intro screen, dynamic slider dots.
+  - Accessible approach with clear visual hierarchy, intuitive navigation.
+  
+  Author: jakubpernal
+  Built without any external frameworks.
+-->
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slider Section</title>
+  <style>
+    :root {
+      /* Typography Sizes - Desktop */
+      --display-large: 57px; /* h1, var(--space-3xl) (48px), Główna hierarchia */
+      --display-medium: 45px; /* h2, var(--space-2xl) (40px), Podtytuł sekcji */
+      --display-small: 36px; /* h3, var(--space-xl) (32px), Sekcja lub dział */
+      --headline-large: 32px; /* h4, var(--space-lg) (24px), Blok lub grupa */
+      --headline-medium: 28px; /* h5, var(--space-lg) (24px), Niższy nagłówek */
+      --headline-small: 24px; /* h6, var(--space-md) (16px), Lokalne tytuły */
+      --title-large: 22px; /* subtitle, var(--space-md) (16px), Opis sekcji */
+      --title-medium: 16px; /* var(--space-sm) (12px), Etykiety, mniejsze opisy */
+      --title-small: 14px; /* var(--space-xs) (8px), Etykiety pomocnicze */
+      --label-large: 14px; /* var(--space-xs) (8px), Przyciski/labelki */
+      --label-medium: 12px; /* var(--space-2xs) (6px), Inputy/formularze */
+      --label-small: 11px; /* var(--space-2xs) (6px), Najdrobniejsze etykiety */
+      --body-large: 16px; /* paragraf, var(--space-md) (16px), główny tekst */
+      --body-medium: 14px; /* var(--space-sm) (12px), pomocniczy tekst */
+      --body-small: 12px; /* var(--space-xs) (8px), notatki/podpisy */
+ 
+      /* Typography Sizes - Tablet */
+      --display-large-t: 45px; /* h1, var(--space-2xl) (40px), Główna hierarchia */
+      --display-medium-t: 36px; /* h2, var(--space-xl) (32px), Podtytuł sekcji */
+      --display-small-t: 32px; /* h3, var(--space-lg) (24px), Sekcja lub dział */
+      --headline-large-t: 28px; /* h4, var(--space-lg) (24px), Blok lub grupa */
+      --headline-medium-t: 24px; /* h5, var(--space-md) (16px), Niższy nagłówek */
+      --headline-small-t: 22px; /* h6, var(--space-sm) (12px), Lokalne tytuły */
+      --title-large-t: 20px; /* subtitle, var(--space-sm) (12px), Opis sekcji */
+      --title-medium-t: 16px; /* var(--space-sm) (12px), Etykiety, mniejsze opisy */
+      --title-small-t: 14px; /* var(--space-xs) (8px), Etykiety pomocnicze */
+      --label-large-t: 14px; /* var(--space-xs) (8px), Przyciski/labelki */
+      --label-medium-t: 12px; /* var(--space-2xs) (6px), Inputy/formularze */
+      --label-small-t: 11px; /* var(--space-2xs) (6px), Najdrobniejsze etykiety */
+      --body-large-t: 16px; /* paragraf, var(--space-md) (16px), główny tekst */
+      --body-medium-t: 14px; /* var(--space-sm) (12px), pomocniczy tekst */
+      --body-small-t: 12px; /* var(--space-xs) (8px), notatki/podpisy */
+
+      /* Typography Sizes - Mobile */
+      --display-large-m: 36px; /* h1, var(--space-xl) */
+      --display-medium-m: 32px; /* h2, var(--space-lg) */
+      --display-small-m: 28px; /* h3, var(--space-md) */
+      --headline-large-m: 24px; /* h4, var(--space-sm) */
+      --headline-medium-m: 22px; /* h5, var(--space-sm) */
+      --headline-small-m: 20px; /* h6, var(--space-xs) */
+      --title-large-m: 18px; /* subtitle, var(--space-xs) */
+      --title-medium-m: 16px; /* var(--space-xs) */
+      --title-small-m: 14px; /* var(--space-xs) */
+      --label-large-m: 12px; /* var(--space-xs) */
+      --label-medium-m: 10px; /* var(--space-2xs) */
+      --label-small-m: 9px; /* var(--space-2xs) */
+      --body-large-m: 14px; /* p, var(--space-sm) */
+      --body-medium-m: 12px; /* p, var(--space-xs) */
+      --body-small-m: 11px; /* p, var(--space-2xs) */
+
+       /* Line Heights - Desktop */
+      --line-height-display-large: 1.1; /* h1, recommended line height (110%) */
+      --line-height-display-medium: 1.15; /* h2, recommended line height (115%) */
+      --line-height-display-small: 1.2; /* h3, recommended line height (120%) */
+      --line-height-headline-large: 1.25; /* h4, recommended line height (125%) */
+      --line-height-headline-medium: 1.3; /* h5, recommended line height (130%) */
+      --line-height-headline-small: 1.3; /* h6, recommended line height (130%) */
+      --line-height-title-large: 1.4; /* subtitle, recommended line height (140%) */
+      --line-height-title-medium: 1.4; /* recommended line height (140%) */
+      --line-height-title-small: 1.4; /* recommended line height (140%) */
+      --line-height-label-large: 1; /* recommended line height (120%) */
+      --line-height-label-medium: 1; /* recommended line height (120%) */
+      --line-height-label-small: 1; /* recommended line height (120%) */
+      --line-height-body-large: 1.5; /* paragraph, recommended line height (150%) */
+      --line-height-body-medium: 1.5; /* recommended line height (150%) */
+      --line-height-body-small: 1.5; /* recommended line height (150%) */
+
+      /* Spacing Scale */
+      --space-4xs: 2px;
+      --space-3xs: 4px;
+      --space-2xs: 6px;
+      --space-xs: 8px;
+      --space-sm: 12px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 40px;
+      --space-3xl: 48px;
+      --space-4xl: 64px;
+      --space-5xl: 80px;
+      --space-6xl: 96px;      
+
+      /* Primary Colors */
+      --primary-base: #ceb37c;
+      --primary-dark: #a58f63;
+      --primary-very-dark: #3e3625;
+      --primary-light: #f5f0e5;
+      --primary-very-light: #faf7f2;
+ 
+      /* Secondary Colors */
+      --secondary-base: #cca848;
+      --secondary-dark: #a3863a;
+      --secondary-very-dark: #3d3216;
+      --secondary-light: #f5eeda;
+      --secondary-very-light: #faf6ed;
+ 
+      /* Tertiary Colors */
+      --tertiary-base: #161619;
+      --tertiary-dark: #121214;
+      --tertiary-very-dark: #070707;
+      --tertiary-light: #d0d0d1;
+      --tertiary-very-light: #e8e8e8;
+ 
+      /* Neutral Colors */
+      --neutral-base: #7c7c80;
+      --neutral-dark: #3e3e40;
+      --neutral-very-dark: #19191a;
+      --neutral-black: #000000;
+      --neutral-light: #cbcbcc;
+      --neutral-very-light: #e5e5e6;
+      --neutral-extra-light: #f2f2f2;
+      --neutral-white: #ffffff;
+ 
+      /* State Colors */
+      --success: #67bd50;
+      --error: #f2342b;
+      --warning: #ffa92a;
+ 
+      /* Additional */
+      --light-yellow: #e0d970;
+      --pink: #e070c8;
+      --teal: #08d4ef;
+ 
+      /* Gradients (as background-image) */
+      --gradient-vertical-1-to-2: linear-gradient(180deg, #ceb37c 0%, #cca848 100%);
+      --gradient-vertical-1-to-3: linear-gradient(180deg, #ceb37c 0%, #82714e 100%);
+      --gradient-vertical-2-to-3: linear-gradient(180deg, #cca848 0%, #82714e 100%);
+      --gradient-horizontal-1-to-2: linear-gradient(120.96deg, #ceb37c 0%, #cca848 100%);
+      --gradient-horizontal-1-to-3: linear-gradient(120.96deg, #ceb37c 0%, #82714e 100%);
+      --gradient-horizontal-2-to-3: linear-gradient(120.96deg, #cca848 0%, #82714e 100%);
+      --gradient-diagonal-1-to-2: linear-gradient(101.31deg, #ceb37c 0%, #cca848 100%);
+      --gradient-diagonal-1-to-3: linear-gradient(101.31deg, #ceb37c 0%, #82714e 100%);
+      --gradient-diagonal-2-to-3: linear-gradient(101.31deg, #cca848 0%, #82714e 100%);
+      --gradient-horizontal-fade-white: linear-gradient(120.96deg, #ffffff 0%, #ceb37c 100%);
+      --gradient-horizontal-fade-black: linear-gradient(120.96deg, #000000 0%, #82714e 100%);
+      --font-display: "SF Pro Display", sans-serif;
+      --font-rest: "SF Pro Rounded", sans-serif;
+    }
+    @media (max-width: 991px) {
+      :root {
+        --display-large: var(--display-large-t);
+        --display-medium: var(--display-medium-t);
+        --display-small: var(--display-small-t);
+        --headline-large: var(--headline-large-t);
+        --headline-medium: var(--headline-medium-t);
+        --headline-small: var(--headline-small-t);
+        --title-large: var(--title-large-t);
+        --title-medium: var(--title-medium-t);
+        --title-small: var(--title-small-t);
+        --label-large: var(--label-large-t);
+        --label-medium: var(--label-medium-t);
+        --label-small: var(--label-small-t);
+        --body-large: var(--body-large-t);
+        --body-medium: var(--body-medium-t);
+        --body-small: var(--body-small-t);
+      }
+    }
+  
+    @media (max-width: 599px) {
+      :root {
+        --display-large: var(--display-large-m);
+        --display-medium: var(--display-medium-m);
+        --display-small: var(--display-small-m);
+        --headline-large: var(--headline-large-m);
+        --headline-medium: var(--headline-medium-m);
+        --headline-small: var(--headline-small-m);
+        --title-large: var(--title-large-m);
+        --title-medium: var(--title-medium-m);
+        --title-small: var(--title-small-m);
+        --label-large: var(--label-large-m);
+        --label-medium: var(--label-medium-m);
+        --label-small: var(--label-small-m);
+        --body-large: var(--body-large-m);
+        --body-medium: var(--body-medium-m);
+        --body-small: var(--body-small-m);
+      }
+    }
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--tertiary-very-light);
+      font-family: var(--font-rest);
+      color: #333;
+      overflow-x: hidden;
+    }
+       
+    h1, h2, h3, h4, h5, h6, p {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* CSS slider-section */
+
+    .slider-section {
+      position: relative;
+      padding-top: 30px;
+      width: 100vw;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .slider-section .card-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      gap: 20px;
+      padding: 0 clamp(20px, 5vw, 60px);
+      padding-top: 10px;
+    padding-bottom: 15px;
+    touch-action: none;
+    }
+
+    @media (max-width: 599px) {
+      .slider-section .card-track {
+        gap: 14px;
+      }
+    }
+
+    .slider-section .card {
+      flex-shrink: 0;
+      height: 640px;
+      width: 90vw;
+      max-width: 1500px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      margin: 0;
+    }
+
+    @media (max-width: 991px) {
+      .slider-section .card {
+        height: 550px;
+      }
+    }
+    
+    @media (max-width: 599px) {
+      .slider-section .card {
+        height: 450px;
+      }
+    }
+
+    .slider-section .card.ghost {
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .slider-section .center-cta {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+    }
+
+    .slider-section .center-cta h2 {
+      font-size: var(--display-medium);
+      line-height: var(--line-height-display-medium);
+      margin-bottom: var(--space-md);
+      margin-top: 17%;
+    }
+
+    .slider-section .center-cta p {
+      font-size: var(--body-large);
+      line-height: var(--line-height-body-large);
+      margin-bottom: var(--space-md);
+    }
+
+    .slider-section .center-cta a {
+      display: inline-block;
+      background-color: var(--neutral-white);
+      color: var(--neutral-black);
+      font-size: var(--label-large);
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    .slider-section .center-cta a:hover {
+      background-color: var(--neutral-very-light);
+      color: var(--neutral-black);
+    }
+
+    .slider-section .two-col {
+      width: 100%;
+      display: flex;
+    }
+    
+    @media (max-width: 599px) {
+
+      .slider-section .two-col {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+    
+      .slider-section .two-col .right {
+        height: 60%;
+        width: 100%;
+        padding-top: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    
+      .slider-section .two-col .left {
+        height: 40%;
+        width: 100%;
+        padding-bottom: 1rem;
+        padding-left: 10%;
+        padding-right: 10%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+  @media (min-width: 600px) {
+
+    .slider-section .two-col .left {
+      width: 40%;
+      padding-left: 10%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      /* margin-left: 5%; */
+    }
+  }
+    .slider-section .two-col .left h2 {
+      font-size: var(--display-medium);
+      line-height: var(--line-height-display-medium);
+      margin-bottom: var(--space-md);
+    }
+
+    .slider-section .two-col .left p {
+      font-size: var(--body-large);
+      line-height: var(--line-height-body-large);
+      margin-bottom: var(--space-md);
+    }
+  
+    @media (min-width: 600px) {
+
+      .slider-section .two-col .right {
+      width: 60%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+  
+    .slider-section .two-col img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+    .slider-section .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);  
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.85);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.3s, background-color 0.3s;
+      padding: 0;
+    }
+
+    .slider-section .arrow:hover {
+      color: white;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .slider-section .arrow:disabled {
+      color: rgba(255, 255, 255, 0.2);
+      cursor: default;
+    }
+
+    .slider-section .arrow.left {
+      left: 90px;
+      transform: translateY(-50%) translateX(2px);
+    }
+
+    .slider-section .arrow.right {
+      right: 90px;
+      transform: translateY(-50%) translateX(-4px);
+    }
+
+    .slider-section .dots {
+      display: flex;
+      gap: 10px;
+      margin-top: 1.1rem;
+      justify-content: center;
+    }
+
+    @media (max-width: 991px) {
+      .slider-section .dots {
+        margin-top: 0.7rem;
+      }
+    }
+    
+    @media (max-width: 599px) {
+      .slider-section .dots {
+        margin-top: 0.4rem;
+      }
+    }
+
+    .slider-section .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ccc;
+      cursor: pointer;
+    }
+
+    .slider-section .dot.active {
+      background: white;
+      border: 1px solid #444;
+    }
+
+    .slider-section .card.bg1 { background: var(--tertiary-light); }
+    .slider-section .card.bg2 { background: var(--tertiary-light); }
+    .slider-section .card.bg3 { background: var(--tertiary-light); }
+    .slider-section .card.bg4 { background: var(--tertiary-light); }
+
+    .slider-section .arrow.left span {
+      display: inline-block;
+      transform: translateX(-2px);
+    }
+    
+    .slider-section .arrow.right span {
+      display: inline-block;
+      transform: translateX(2px);
+    }
+
+    .slider-section .bg-image {
+      /* background-image: url('https://source.unsplash.com/1600x900/?barber'); */
+      background-size: cover;
+      background-position: center;
+      /* color: white; */ /* Odkomentuj, jeśli tło będzie ciemne */
+    }
+
+    .slider-section .card .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 144px;
+      height: 100%;
+      border-radius: 0;
+      color: rgba(255, 255, 255, 0.983);
+      border: none;
+      cursor: pointer;
+      font-size: 2rem;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .slider-section .card .arrow.left {
+      left: -4px;
+    }
+
+    .slider-section .card .arrow.right {
+      right: -4px;
+    }
+
+    .slider-section .card .arrow:hover {
+      background: #77777757;
+      backdrop-filter: blur(4px);
+      color: rgb(255, 255, 255);
+    }
+
+    .slider-section .intro-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: var(--neutral-dark);
+      color: var(--neutral-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      opacity: 0;
+      animation: introFadeIn 0s ease-in forwards, introFadeOut 1s ease-in 4s forwards;
+    }
+
+    @keyframes introFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes introFadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.02);
+      }
+    }
+
+    .slider-section .intro-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      min-width: 400px;
+      min-height: 120px;
+    }
+
+    .slider-section .intro-logo-wrap h2{
+      margin: 0;
+    }
+
+    .slider-section .logo-square {
+      width: 100px;
+      height: 100px;
+      min-width: 100px;
+      min-height: 100px;
+      background-color: var(--neutral-light);
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 991px) {
+      .slider-section .logo-square {
+        margin-left: 40px;
+      }
+    }
+
+    @media (max-width: 599px) {
+      .slider-section .intro-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      min-width: 400px;
+      min-height: 120px;
+
+    }
+
+    .slider-section .intro-logo-wrap h2{
+      margin: 0;
+    }
+
+    .slider-section .logo-square {
+      width: 100px;
+      height: 100px;
+      min-width: 100px;
+      min-height: 100px;
+      background-color: var(--neutral-light);
+      border-radius: 8px;
+      flex-shrink: 0;
+      margin: 0;
+      }
+    }
+
+    .slider-section .typing-text {
+      overflow: hidden; 
+      white-space: nowrap;
+      display: block;
+      margin-bottom: 0;
+    }
+
+    .slider-section .typing-text .line1 {
+      font-size: var(--display-medium) !important;
+      font-weight: 700;
+      color: var(--neutral-light);
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 0;
+      animation: typing1 1.5s steps(30, end) 1s forwards;
+    }
+
+    @keyframes typing1 {
+      to { width: 245px; }
+    }
+
+    @media (max-width: 991px) {
+      @keyframes typing1 {
+      to { width: 195px; }
+    }
+    }
+
+    @media (max-width: 599px) {
+      @keyframes typing1 {
+      to { width: 175px; }
+    }
+    }
+
+    .fade-lock,
+    .fade-lock * {
+    background-color: transparent !important;
+    color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    transition: all 0.6s ease !important;
+  }
+  
+  .card.bg2.fade-lock {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  
+  .fade-in-ready .card.bg2 {
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.8s ease, opacity 0.8s ease;
+  }
+  
+  .fade-in-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+.fade-in-ready .fade-in-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dots.fade-in-item {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 1s ease, opacity 1s ease;
+}
+
+.fade-in-ready .dots.fade-in-item {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.25s;
+}
+
+  @media (max-width: 991px) {
+    .card .arrow,
+    .slider-section .arrow {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .slider-container:hover .card .arrow,
+    .slider-container:hover .slider-section .arrow {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  
+  .fix {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  /* CSS slider-section */
+
+
+  </style>
+</head>
+<body>
+
+  <section class="hero-section slider-section">
+    <div class="slider-container">
+      <div class="card-track" id="track">
+        <div class="card ghost"></div>
+        <!-- KARTA 1 -->
+        <div class="card bg1 center-cta bg-image">
+          <div class="fade-in-item fix">
+            <h2>Witamy w zielonym świecie</h2>
+            <p>Odkryj świeżość, naturę i lekkość w naszym stylu.</p>
+            <a href="#">Zacznij teraz</a>
+          </div>
+          <div class="intro-overlay" id="intro-animation">
+            <div class="intro-logo-wrap">
+              <div class="logo-square"></div>
+              <h2 class="typing-text"><span class="line1">twoja firma.</span></h2>
+            </div>
+          </div>
+          <button class="arrow left"><span>&lt;</span></button>
+          <button class="arrow right"><span>&gt;</span></button>
+        </div>
+
+        <!-- KARTA 2 -->
+        <div class="card fade-lock bg2">
+          <div class="two-col">
+            <div class="left fade-in-item">
+              <h2>Świeże podejście</h2>
+              <p>Tworzymy rozwiązania, które są nowoczesne, zielone i pełne życia.</p>
+            </div>
+            <div class="right fade-in-item">
+              <img src="https://source.unsplash.com/600x400/?nature,leaf" alt="Zieleń">
+            </div>
+          </div>
+          <button class="arrow left"><span>&lt;</span></button>
+          <button class="arrow right"><span>&gt;</span></button>
+        </div>
+
+        <!-- KARTA 3 -->
+        <div class="card bg3 fade-lock">
+          <div class="two-col">
+            <div class="left fade-in-item">
+              <h2>Technologia i natura</h2>
+              <p>Łączymy innowacje z ekologicznym podejściem. Zainspiruj się zieloną transformacją.</p>
+            </div>
+            <div class="right fade-in-item">
+              <img src="https://source.unsplash.com/600x400/?technology,nature" alt="Tech Natura">
+            </div>
+          </div>
+          <button class="arrow left"><span>&lt;</span></button>
+          <button class="arrow right"><span>&gt;</span></button>
+        </div>
+
+        <!-- KARTA 4 -->
+        <div class="card bg4 center-cta fade-lock fade-in-item">
+          <div>
+            <h2>Gotowy na zmiany?</h2>
+            <p>Dołącz do nas i zobacz, jak prostota może zmieniać świat.</p>
+            <a href="#">Zapisz się</a>
+          </div>
+          <button class="arrow left"><span>&lt;</span></button>
+          <button class="arrow right"><span>&gt;</span></button>
+        </div>
+        <div class="card ghost"></div>
+      </div>
+    </div>
+
+    <!-- Kropki -->
+    <div class="dots fade-lock fade-in-item" id="dots"></div>
+  </section>
+
+  <script>
+
+    // JS slider-section
+
+    let lastClickTime = 0;
+    const CLICK_DELAY = 500;
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      const root = document.querySelector(".hero-section");
+      const track = root.querySelector("#track");
+      const dots = root.querySelector("#dots");
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+      if (isTouchDevice) {
+        root.querySelectorAll(".arrow").forEach(arrow => {
+          arrow.style.display = "none";
+        });
+      }
+    
+      const cards = track.children;
+      const total = cards.length;
+      let current = 1;
+      const firstReal = 1;
+      const lastReal = total - 2;
+    
+      const updateSlider = () => {
+        const container = root.querySelector('.slider-container');
+        const containerWidth = container.offsetWidth;
+        const card = cards[current];
+        const cardLeftInTrack = card.offsetLeft;
+        const translateX = cardLeftInTrack - (containerWidth - card.offsetWidth) / 2;
+    
+        track.style.transform = `translateX(-${translateX}px)`;
+    
+        root.querySelectorAll(".arrow.left").forEach(btn => btn.disabled = current === firstReal);
+        root.querySelectorAll(".arrow.right").forEach(btn => btn.disabled = current === lastReal);
+    
+        root.querySelectorAll(".card").forEach((card, index) => {
+          const leftArrow = card.querySelector(".arrow.left");
+          const rightArrow = card.querySelector(".arrow.right");
+    
+          if (!isTouchDevice) {
+            if (index === current) {
+              if (leftArrow) leftArrow.style.display = current === firstReal ? "none" : "flex";
+              if (rightArrow) rightArrow.style.display = current === lastReal ? "none" : "flex";
+            } else {
+              if (leftArrow) leftArrow.style.display = "none";
+              if (rightArrow) rightArrow.style.display = "none";
+            }
+          }
+        });
+    
+        dots.innerHTML = "";
+        for (let i = firstReal; i <= lastReal; i++) {
+          const dot = document.createElement("div");
+          dot.className = "dot" + (i === current ? " active" : "");
+          dot.addEventListener("click", () => {
+            current = i;
+            updateSlider();
+          });
+          dots.appendChild(dot);
+        }
+      };
+    
+      root.querySelectorAll(".card .arrow.left").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const now = Date.now();
+          if (now - lastClickTime < CLICK_DELAY) return;
+          lastClickTime = now;
+          if (current > firstReal) {
+            current--;
+            updateSlider();
+          }
+        });
+      });
+    
+      root.querySelectorAll(".card .arrow.right").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const now = Date.now();
+          if (now - lastClickTime < CLICK_DELAY) return;
+          lastClickTime = now;
+          if (current < lastReal) {
+            current++;
+            updateSlider();
+          }
+        });
+      });
+    
+      let autoplayInterval = null;
+    
+      const startAutoplay = () => {
+        if (window.innerWidth < 991) return;
+        if (autoplayInterval !== null) return;
+        autoplayInterval = setInterval(() => {
+          current = current < lastReal ? current + 1 : firstReal;
+          updateSlider();
+        }, 10000);
+      };
+    
+      const stopAutoplay = () => {
+        if (autoplayInterval !== null) {
+          clearInterval(autoplayInterval);
+          autoplayInterval = null;
+        }
+      };
+    
+      function enableTouchSwipe() {
+        if (window.innerWidth >= 992) return;
+    
+        let startX = 0;
+        let isDragging = false;
+    
+        track.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          startX = e.touches[0].clientX;
+          isDragging = true;
+        }, { passive: false });
+    
+        track.addEventListener("touchmove", (e) => {
+          e.preventDefault();
+          if (!isDragging) return;
+          const currentX = e.touches[0].clientX;
+          const diffX = startX - currentX;
+    
+          if (Math.abs(diffX) > 50) {
+            if (diffX > 0 && current < lastReal) {
+              current++;
+              updateSlider();
+            } else if (diffX < 0 && current > firstReal) {
+              current--;
+              updateSlider();
+            }
+            isDragging = false;
+          }
+        }, { passive: false });
+    
+        track.addEventListener("touchend", () => {
+          isDragging = false;
+        });
+      }
+    
+      const container = root.querySelector('.slider-container');
+      const containerWidth = container.offsetWidth;
+      const card = cards[1];
+      const cardLeftInTrack = card.offsetLeft;
+      const translateX = cardLeftInTrack - (containerWidth - card.offsetWidth) / 2;
+    
+      track.style.transition = "none";
+      track.style.transform = `translateX(-${translateX}px)`;
+    
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          track.style.transition = "transform 0.5s ease-in-out";
+          updateSlider();
+    
+          setTimeout(() => {
+            const intro = root.querySelector("#intro-animation");
+            if (intro) {
+              intro.style.display = "none";
+              intro.style.pointerEvents = "none";
+              intro.style.zIndex = "-1";
+            }
+            root.querySelectorAll(".fade-lock").forEach(el => el.classList.remove("fade-lock"));
+            document.body.classList.add("fade-in-ready");
+    
+            if (window.innerWidth > 991) {
+              startAutoplay();
+            } else {
+              enableTouchSwipe();
+            }
+          }, 5000);
+        });
+      });
+    
+      const hoverTarget = root;
+      if (hoverTarget) {
+        hoverTarget.addEventListener("mouseenter", () => {
+          console.log("🛑 Myszka weszła – zatrzymuję autoplay");
+          stopAutoplay();
+        });
+        hoverTarget.addEventListener("mouseleave", () => {
+          console.log("▶️ Myszka wyszła – uruchamiam autoplay");
+          startAutoplay();
+        });
+      }
+    
+      function enableResizeCentering(isActive) {
+        const section = root.querySelector(".slider-section");
+        const container = root.querySelector(".slider-container");
+        const track = root.querySelector(".card-track");
+    
+        if (isActive) {
+          section.style.margin = "0 auto";
+          container.style.margin = "0 auto";
+          track.style.margin = "0 auto";
+          track.style.transition = "none";
+        } else {
+          section.style.margin = "";
+          container.style.margin = "";
+          track.style.margin = "";
+          track.style.transition = "transform 0.5s ease-in-out";
+        }
+      }
+    
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        enableResizeCentering(true);
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          enableResizeCentering(false);
+          updateSlider();
+        }, 300);
+      });
+    
+      let previousContainerWidth = document.body.offsetWidth;
+      setInterval(() => {
+        const currentContainerWidth = document.body.offsetWidth;
+        if (currentContainerWidth !== previousContainerWidth) {
+          const container = root.querySelector('.slider-container');
+          const containerWidth = container.offsetWidth;
+          const card = cards[current];
+          const cardLeftInTrack = card.offsetLeft;
+          const translateX = cardLeftInTrack - (containerWidth - card.offsetWidth) / 2;
+          track.style.transform = `translateX(-${translateX}px)`;
+    
+          requestAnimationFrame(() => {
+            updateSlider();
+            previousContainerWidth = currentContainerWidth;
+          });
+        }
+      }, 350);
+    });
+
+    // JS slider-section
+
+    
+    </script>
+
+</body>
+</html>
