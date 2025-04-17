@@ -1,3 +1,87 @@
+
+// JS navbar-section
+function initNavbarSection() {
+  const root = document.querySelector(".navbar-section");
+  if (!root) return;
+  const links = root.querySelectorAll(".nav-link");
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + window.innerHeight / 2;
+    links.forEach(link => {
+      const section = document.getElementById(link.dataset.section);
+      if (section) {
+        const top = section.offsetTop;
+        const bottom = top + section.offsetHeight;
+        if (scrollPos >= top && scrollPos < bottom) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      }
+    });
+  }
+  window.addEventListener("scroll", updateActiveLink);
+  updateActiveLink();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const navbar = document.querySelector(".navbar-container");
+  setTimeout(() => {
+    navbar.classList.remove("hide-navbar");
+    navbar.style.animation = "fadeInTop 1.2s ease-out";
+    setTimeout(() => {
+      navbar.style.animation = "";
+    }, 1200);
+  }, 5400);
+
+
+  const hamburger = document.querySelector(".hamburger-icon");
+  const overlay = document.querySelector(".mobile-nav-overlay");
+
+hamburger.addEventListener("click", () => {
+  if (overlay.classList.contains("active")) {
+    overlay.classList.add("hiding");
+    hamburger.classList.remove("active");
+    document.body.classList.remove("no-scroll");
+
+    setTimeout(() => {
+      overlay.classList.remove("active");
+      overlay.classList.remove("hiding");
+    }, 600);
+  } else {
+    overlay.classList.add("active");
+    hamburger.classList.add("active");
+    document.body.classList.add("no-scroll");
+  }
+});
+
+let lastScrollTop = 0;
+let hideTimeout;
+
+window.addEventListener("scroll", () => {
+  const navbar = document.querySelector(".navbar-container");
+  const currentScroll = window.scrollY;
+
+  if (currentScroll > lastScrollTop && currentScroll > 60) {
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      navbar.classList.add("hide-navbar");
+    }, 400);
+  } else {
+    clearTimeout(hideTimeout);
+      if (navbar.classList.contains("hide-navbar")) {
+        navbar.classList.remove("hide-navbar");
+        navbar.style.animation = "fadeInTop 0.4s ease-out";
+        setTimeout(() => {
+          navbar.style.animation = "";
+        }, 400);
+      }
+  }
+
+  lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+});
+});
+// JS navbar-section
+
 // JS slider-section & card-section
 
 document.addEventListener("DOMContentLoaded", () => {

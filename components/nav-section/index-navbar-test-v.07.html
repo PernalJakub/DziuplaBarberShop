@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Navbar Section</title>
+  <style>
+    :root {
+      /* Typography Sizes - Desktop */
+      --display-large: 57px; /* h1, var(--space-3xl) (48px), Główna hierarchia */
+      --display-medium: 45px; /* h2, var(--space-2xl) (40px), Podtytuł sekcji */
+      --display-small: 36px; /* h3, var(--space-xl) (32px), Sekcja lub dział */
+      --headline-large: 32px; /* h4, var(--space-lg) (24px), Blok lub grupa */
+      --headline-medium: 28px; /* h5, var(--space-lg) (24px), Niższy nagłówek */
+      --headline-small: 24px; /* h6, var(--space-md) (16px), Lokalne tytuły */
+      --title-large: 22px; /* subtitle, var(--space-md) (16px), Opis sekcji */
+      --title-medium: 16px; /* var(--space-sm) (12px), Etykiety, mniejsze opisy */
+      --title-small: 14px; /* var(--space-xs) (8px), Etykiety pomocnicze */
+      --label-large: 14px; /* var(--space-xs) (8px), Przyciski/labelki */
+      --label-medium: 12px; /* var(--space-2xs) (6px), Inputy/formularze */
+      --label-small: 11px; /* var(--space-2xs) (6px), Najdrobniejsze etykiety */
+      --body-large: 16px; /* paragraf, var(--space-md) (16px), główny tekst */
+      --body-medium: 14px; /* var(--space-sm) (12px), pomocniczy tekst */
+      --body-small: 12px; /* var(--space-xs) (8px), notatki/podpisy */
+ 
+      /* Typography Sizes - Tablet */
+      --display-large-t: 45px; /* h1, var(--space-2xl) (40px), Główna hierarchia */
+      --display-medium-t: 36px; /* h2, var(--space-xl) (32px), Podtytuł sekcji */
+      --display-small-t: 32px; /* h3, var(--space-lg) (24px), Sekcja lub dział */
+      --headline-large-t: 28px; /* h4, var(--space-lg) (24px), Blok lub grupa */
+      --headline-medium-t: 24px; /* h5, var(--space-md) (16px), Niższy nagłówek */
+      --headline-small-t: 22px; /* h6, var(--space-sm) (12px), Lokalne tytuły */
+      --title-large-t: 20px; /* subtitle, var(--space-sm) (12px), Opis sekcji */
+      --title-medium-t: 16px; /* var(--space-sm) (12px), Etykiety, mniejsze opisy */
+      --title-small-t: 14px; /* var(--space-xs) (8px), Etykiety pomocnicze */
+      --label-large-t: 14px; /* var(--space-xs) (8px), Przyciski/labelki */
+      --label-medium-t: 12px; /* var(--space-2xs) (6px), Inputy/formularze */
+      --label-small-t: 11px; /* var(--space-2xs) (6px), Najdrobniejsze etykiety */
+      --body-large-t: 16px; /* paragraf, var(--space-md) (16px), główny tekst */
+      --body-medium-t: 14px; /* var(--space-sm) (12px), pomocniczy tekst */
+      --body-small-t: 12px; /* var(--space-xs) (8px), notatki/podpisy */
+
+      /* Typography Sizes - Mobile */
+      --display-large-m: 36px; /* h1, var(--space-xl) */
+      --display-medium-m: 32px; /* h2, var(--space-lg) */
+      --display-small-m: 28px; /* h3, var(--space-md) */
+      --headline-large-m: 24px; /* h4, var(--space-sm) */
+      --headline-medium-m: 22px; /* h5, var(--space-sm) */
+      --headline-small-m: 20px; /* h6, var(--space-xs) */
+      --title-large-m: 18px; /* subtitle, var(--space-xs) */
+      --title-medium-m: 16px; /* var(--space-xs) */
+      --title-small-m: 14px; /* var(--space-xs) */
+      --label-large-m: 12px; /* var(--space-xs) */
+      --label-medium-m: 10px; /* var(--space-2xs) */
+      --label-small-m: 9px; /* var(--space-2xs) */
+      --body-large-m: 14px; /* p, var(--space-sm) */
+      --body-medium-m: 12px; /* p, var(--space-xs) */
+      --body-small-m: 11px; /* p, var(--space-2xs) */
+
+       /* Line Heights - Desktop */
+      --line-height-display-large: 1.1; /* h1, recommended line height (110%) */
+      --line-height-display-medium: 1.15; /* h2, recommended line height (115%) */
+      --line-height-display-small: 1.2; /* h3, recommended line height (120%) */
+      --line-height-headline-large: 1.25; /* h4, recommended line height (125%) */
+      --line-height-headline-medium: 1.3; /* h5, recommended line height (130%) */
+      --line-height-headline-small: 1.3; /* h6, recommended line height (130%) */
+      --line-height-title-large: 1.4; /* subtitle, recommended line height (140%) */
+      --line-height-title-medium: 1.4; /* recommended line height (140%) */
+      --line-height-title-small: 1.4; /* recommended line height (140%) */
+      --line-height-label-large: 1; /* recommended line height (120%) */
+      --line-height-label-medium: 1; /* recommended line height (120%) */
+      --line-height-label-small: 1; /* recommended line height (120%) */
+      --line-height-body-large: 1.5; /* paragraph, recommended line height (150%) */
+      --line-height-body-medium: 1.5; /* recommended line height (150%) */
+      --line-height-body-small: 1.5; /* recommended line height (150%) */
+
+      /* Spacing Scale */
+      --space-4xs: 2px;
+      --space-3xs: 4px;
+      --space-2xs: 6px;
+      --space-xs: 8px;
+      --space-sm: 12px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 40px;
+      --space-3xl: 48px;
+      --space-4xl: 64px;
+      --space-5xl: 80px;
+      --space-6xl: 96px;      
+
+      /* Primary Colors */
+      --primary-base: #ceb37c;
+      --primary-dark: #a58f63;
+      --primary-very-dark: #3e3625;
+      --primary-light: #f5f0e5;
+      --primary-very-light: #faf7f2;
+ 
+      /* Secondary Colors */
+      --secondary-base: #cca848;
+      --secondary-dark: #a3863a;
+      --secondary-very-dark: #3d3216;
+      --secondary-light: #f5eeda;
+      --secondary-very-light: #faf6ed;
+ 
+      /* Tertiary Colors */
+      --tertiary-base: #161619;
+      --tertiary-dark: #121214;
+      --tertiary-very-dark: #070707;
+      --tertiary-light: #d0d0d1;
+      --tertiary-very-light: #e8e8e8;
+ 
+      /* Neutral Colors */
+      --neutral-base: #7c7c80;
+      --neutral-dark: #3e3e40;
+      --neutral-very-dark: #19191a;
+      --neutral-black: #000000;
+      --neutral-light: #cbcbcc;
+      --neutral-very-light: #e5e5e6;
+      --neutral-extra-light: #f2f2f2;
+      --neutral-white: #ffffff;
+ 
+      /* State Colors */
+      --success: #67bd50;
+      --error: #f2342b;
+      --warning: #ffa92a;
+ 
+      /* Additional */
+      --light-yellow: #e0d970;
+      --pink: #e070c8;
+      --teal: #08d4ef;
+ 
+      /* Gradients (as background-image) */
+      --gradient-vertical-1-to-2: linear-gradient(180deg, #ceb37c 0%, #cca848 100%);
+      --gradient-vertical-1-to-3: linear-gradient(180deg, #ceb37c 0%, #82714e 100%);
+      --gradient-vertical-2-to-3: linear-gradient(180deg, #cca848 0%, #82714e 100%);
+      --gradient-horizontal-1-to-2: linear-gradient(120.96deg, #ceb37c 0%, #cca848 100%);
+      --gradient-horizontal-1-to-3: linear-gradient(120.96deg, #ceb37c 0%, #82714e 100%);
+      --gradient-horizontal-2-to-3: linear-gradient(120.96deg, #cca848 0%, #82714e 100%);
+      --gradient-diagonal-1-to-2: linear-gradient(101.31deg, #ceb37c 0%, #cca848 100%);
+      --gradient-diagonal-1-to-3: linear-gradient(101.31deg, #ceb37c 0%, #82714e 100%);
+      --gradient-diagonal-2-to-3: linear-gradient(101.31deg, #cca848 0%, #82714e 100%);
+      --gradient-horizontal-fade-white: linear-gradient(120.96deg, #ffffff 0%, #ceb37c 100%);
+      --gradient-horizontal-fade-black: linear-gradient(120.96deg, #000000 0%, #82714e 100%);
+      --font-display: "SF Pro Display", sans-serif;
+      --font-rest: "SF Pro Rounded", sans-serif;
+
+      --container-max-width: 1187px;
+    }
+  
+    @media (max-width: 991px) {
+      :root {
+        --display-large: var(--display-large-t);
+        --display-medium: var(--display-medium-t);
+        --display-small: var(--display-small-t);
+        --headline-large: var(--headline-large-t);
+        --headline-medium: var(--headline-medium-t);
+        --headline-small: var(--headline-small-t);
+        --title-large: var(--title-large-t);
+        --title-medium: var(--title-medium-t);
+        --title-small: var(--title-small-t);
+        --label-large: var(--label-large-t);
+        --label-medium: var(--label-medium-t);
+        --label-small: var(--label-small-t);
+        --body-large: var(--body-large-t);
+        --body-medium: var(--body-medium-t);
+        --body-small: var(--body-small-t);
+      }
+    }
+  
+    @media (max-width: 599px) {
+      :root {
+        --display-large: var(--display-large-m);
+        --display-medium: var(--display-medium-m);
+        --display-small: var(--display-small-m);
+        --headline-large: var(--headline-large-m);
+        --headline-medium: var(--headline-medium-m);
+        --headline-small: var(--headline-small-m);
+        --title-large: var(--title-large-m);
+        --title-medium: var(--title-medium-m);
+        --title-small: var(--title-small-m);
+        --label-large: var(--label-large-m);
+        --label-medium: var(--label-medium-m);
+        --label-small: var(--label-small-m);
+        --body-large: var(--body-large-m);
+        --body-medium: var(--body-medium-m);
+        --body-small: var(--body-small-m);
+      }
+    }
+    * {
+      box-sizing: border-box;
+    }
+    .navbar-section {
+      position: relative;
+    }
+
+    body {
+      margin: 0;
+      background: var(--tertiary-very-light);
+      font-family: var(--font-rest);
+      color: #333;
+      overflow-x: hidden;
+    }
+       
+    h1, h2, h3, h4, h5, h6, p {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* CSS navbar-section */
+    @keyframes fadeInTop {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOutTop {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+    }
+    /* .navbar-section {
+      backdrop-filter: blur(10px);
+      width: 100%;
+    } */
+
+    .navbar-section .navbar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      padding: 0 16px;
+      position: fixed;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 999;
+      transform: translateY(0);
+      transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+      will-change: transform, opacity;
+    }
+
+    .navbar-section .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+    .navbar-section .navbar-logo {
+      width: 30px;
+      height: 30px;
+      background-color: var(--neutral-base);
+    }
+    .navbar-section .navbar-company {
+      font-size: var(--title-large);
+      margin-left: var(--space-sm);
+    }
+    .navbar-section .navbar-center {
+      display: flex;
+      gap: var(--space-sm);
+    }
+    .navbar-section .navbar-center .nav-link {
+      background: none;
+      border: none;
+      font-size: var(--label-large);
+      cursor: pointer;
+      padding: var(--space-2xs) var(--space-xs);
+      color: inherit;
+    }
+    .navbar-section .navbar-center .nav-link:hover,
+    .navbar-section .navbar-center .nav-link.active {
+      color: var(--primary-base);
+    }
+    .navbar-section .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .navbar-section .navbar-right .social-icon {
+      width: 26px;
+      height: 26px;
+      background-color: #cca848;
+      cursor: pointer;
+    }
+    .navbar-section .navbar-right .social-icon + .social-icon,
+    .navbar-section .mobile-nav-right .social-icon + .social-icon {
+      background-color: #ceb37c;
+    }
+    .navbar-section .navbar-right .social-icon + .social-icon + .social-icon,
+    .navbar-section .mobile-nav-right .social-icon + .social-icon + .social-icon {
+      background-color: #82714e;
+    }
+    .navbar-section .navbar-right .social-icon:hover,
+    .navbar-section .mobile-nav-right .social-icon:hover {
+      filter: brightness(0.8);
+    }
+
+    .navbar-section .hamburger-icon {
+      display: none;
+      background: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      position: relative;
+      z-index: 110;
+    }
+    .navbar-section .hamburger-icon::before,
+    .navbar-section .hamburger-icon::after,
+    .navbar-section .hamburger-icon span {
+      content: "";
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      border-radius: 10px;
+      background-color: #000;
+      left: 0;
+      transition: all 0.3s ease;
+    }
+    .navbar-section .hamburger-icon::before {
+      top: 6px;
+    }
+    .navbar-section .hamburger-icon::after {
+      bottom: 6px;
+    }
+    .navbar-section .hamburger-icon span {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .navbar-section .hamburger-icon.active::before {
+      transform: rotate(45deg);
+      top: 50%;
+    }
+    .navbar-section .hamburger-icon.active::after {
+      transform: rotate(-45deg);
+      bottom: auto;
+      top: 50%;
+    }
+    .navbar-section .hamburger-icon.active span {
+      opacity: 0;
+    }
+    .navbar-section .hamburger-icon.close {
+      display: block;
+      position: absolute;
+      top: var(--space-md);
+      right: var(--space-md);
+    }
+    .navbar-section .hamburger-icon.close span {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .navbar-section .mobile-nav-overlay {
+      position: fixed;
+      top: 60px; /* wysokość navbaru na desktopie */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: auto;
+      max-height: 0;
+      overflow: hidden;
+      /* background-color: rgba(92, 92, 92, 0.348); */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      opacity: 0;
+      /* transform: translateY(-20px); */
+      pointer-events: none;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-md) var(--space-xl) var(--space-md);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      overflow: auto;
+    }
+    .navbar-section .mobile-nav-overlay.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      max-height: 100vh;
+    }
+    .navbar-section .mobile-nav-overlay.hiding {
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+    }
+
+    @media (max-width: 991px) {
+      .navbar-section .mobile-nav-overlay {
+        top: 55px;
+      }
+    }
+    @media (max-width: 599px) {
+      .navbar-section .mobile-nav-overlay {
+        top: 50px;
+      }
+    }
+
+    .navbar-section .mobile-nav-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-lg);
+      justify-content: center;
+      flex: 1;
+    }
+
+    .navbar-section .mobile-nav-center .nav-link {
+      background: none;
+      border: none;
+      font-size: var(--display-medium);
+      cursor: pointer;
+      padding: var(--space-2xs) var(--space-xs);
+      color: inherit;
+    }
+    .navbar-section .mobile-nav-center .nav-link:hover,
+    .navbar-section .mobile-nav-center .nav-link.active {
+      color: var(--primary-base);
+    }
+
+    .navbar-section .mobile-nav-right .social-icon  {
+      width: 45px;
+      height: 45px;
+      background-color: #cca848;
+      cursor: pointer;
+    }
+
+
+    .navbar-section .mobile-nav-right {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      margin-bottom: var(--space-xl);
+      gap: 30px;
+    }
+
+    @media (max-width: 991px) {
+      .navbar-section .navbar-container {
+        height: 55px;
+      }
+      .navbar-section .navbar-center,
+      .navbar-section .navbar-right {
+        display: none;
+      }
+      .navbar-section .hamburger-icon {
+        display: block;
+      }
+    }
+    @media (max-width: 599px) {
+      .navbar-section .navbar-container {
+        height: 50px;
+      }
+    }
+
+    body.no-scroll {
+      overflow: hidden;
+    }
+  
+    .navbar-section .navbar-container {
+      transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+      will-change: transform, opacity;
+    }
+
+    .navbar-section .navbar-container.hide-navbar {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  /* css navbar */
+
+  body {
+    padding-top: 60px; /* height of navbar on desktop */
+  }
+
+  @media (max-width: 991px) {
+    body {
+      padding-top: 55px;
+    }
+  }
+
+  @media (max-width: 599px) {
+    body {
+      padding-top: 50px;
+    }
+  }
+
+    .navbar-section .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--container-max-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      padding: 0 16px;
+      width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+
+  <section class="navbar-section">
+      <div class="navbar-container hide-navbar">
+        <div class="navbar-inner">
+        <div class="navbar-left">
+          <div class="navbar-logo"></div>
+          <span class="navbar-company">Twoja Firma</span>
+        </div> 
+        <div class="navbar-center">
+          <button class="nav-link" data-section="about">O nas</button>
+          <button class="nav-link" data-section="card-section">Card Section</button>
+          <button class="nav-link" data-section="slider-section">Slider Section</button>
+          <button class="nav-link" data-section="contact">Kontakt</button>
+        </div>
+        <button class="hamburger-icon" aria-label="Toggle menu"></button>
+        <div class="navbar-right">
+          <div class="social-icon"></div>
+          <div class="social-icon"></div>
+          <div class="social-icon"></div>
+        </div>
+        </div>
+      </div>
+      <div class="mobile-nav-overlay">
+        <div class="mobile-nav-center">
+          <button class="nav-link" data-section="about">O nas</button>
+          <button class="nav-link" data-section="card-section">Card Section</button>
+          <button class="nav-link" data-section="slider-section">Slider Section</button>
+          <button class="nav-link" data-section="contact">Kontakt</button>
+        </div>
+        <div class="mobile-nav-right">
+          <div class="social-icon"></div>
+          <div class="social-icon"></div>
+          <div class="social-icon"></div>
+        </div>
+      </div>
+  </section>
+
+  <script>
+    // JS navbar-section
+    function initNavbarSection() {
+      const root = document.querySelector(".navbar-section");
+      if (!root) return;
+      const links = root.querySelectorAll(".nav-link");
+      function updateActiveLink() {
+        const scrollPos = window.scrollY + window.innerHeight / 2;
+        links.forEach(link => {
+          const section = document.getElementById(link.dataset.section);
+          if (section) {
+            const top = section.offsetTop;
+            const bottom = top + section.offsetHeight;
+            if (scrollPos >= top && scrollPos < bottom) {
+              link.classList.add("active");
+            } else {
+              link.classList.remove("active");
+            }
+          }
+        });
+      }
+      window.addEventListener("scroll", updateActiveLink);
+      updateActiveLink();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const navbar = document.querySelector(".navbar-container");
+      setTimeout(() => {
+        navbar.classList.remove("hide-navbar");
+        navbar.style.animation = "fadeInTop 1.2s ease-out";
+        setTimeout(() => {
+          navbar.style.animation = "";
+        }, 1200);
+      }, 5000);
+
+
+      const hamburger = document.querySelector(".hamburger-icon");
+      const overlay = document.querySelector(".mobile-nav-overlay");
+
+    hamburger.addEventListener("click", () => {
+      if (overlay.classList.contains("active")) {
+        overlay.classList.add("hiding");
+        hamburger.classList.remove("active");
+        document.body.classList.remove("no-scroll");
+ 
+        setTimeout(() => {
+          overlay.classList.remove("active");
+          overlay.classList.remove("hiding");
+        }, 600);
+      } else {
+        overlay.classList.add("active");
+        hamburger.classList.add("active");
+        document.body.classList.add("no-scroll");
+      }
+    });
+
+    let lastScrollTop = 0;
+    let hideTimeout;
+    
+    window.addEventListener("scroll", () => {
+      const navbar = document.querySelector(".navbar-container");
+      const currentScroll = window.scrollY;
+    
+      if (currentScroll > lastScrollTop && currentScroll > 60) {
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+          navbar.classList.add("hide-navbar");
+        }, 400);
+      } else {
+        clearTimeout(hideTimeout);
+          if (navbar.classList.contains("hide-navbar")) {
+            navbar.classList.remove("hide-navbar");
+            navbar.style.animation = "fadeInTop 0.4s ease-out";
+            setTimeout(() => {
+              navbar.style.animation = "";
+            }, 400);
+          }
+      }
+    
+      lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    });
+  });
+  // JS navbar-section
+  </script>
+
+</body>
+</html>
