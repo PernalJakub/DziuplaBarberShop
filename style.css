@@ -306,7 +306,7 @@
     .navbar-section .navbar-center {
       display: flex;
       gap: var(--space-sm);
-      padding-right: 30px;
+      padding-right: 40px;
     }
     .navbar-section .navbar-center .nav-link {
       background: none;
